@@ -1,2 +1,2 @@
-web: gunicorn tel_bot.py --log-file -
+web: python tel_bot.py
 
