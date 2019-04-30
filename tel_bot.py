@@ -1,8 +1,13 @@
 from telegram.ext import Updater , CommandHandler
 import requests
+import os
 import re
-catapi = "https://random.dog/woof.json"
 
+TOKEN = 'you token goes here'
+
+
+PORT = int(os.environ.get('PORT', '8443'))
+catapi = "https://random.dog/woof.json"
 def return_url():
 	url = requests.get(catapi).json()['url']
 	return url
@@ -19,7 +24,7 @@ def command_nilesh(bot , update):
 
 def command_anmol(bot , update):
 	chat_id = update.message.chat_id
-	bot.send_message(chat_id = chat_id , text = 'chutiya aadmi')
+	bot.send_message(chat_id = chat_id , text = 'ghatiya aadmi')
 
 def command_ashutosh(bot , update):
 	chat_id = update.message.chat_id
@@ -30,14 +35,17 @@ def command_manas(bot , update):
 	bot.send_message(chat_id = chat_id , text = 'andha vella aadmi')
 
 def send_image():
-	updater = Updater('843445997:AAHrbSPNH0WTkKhzyRyJ_DA1N203rW5Q71g')
+	updater = Updater(TOKEN)
 	dp = updater.dispatcher
 	dp.add_handler(CommandHandler('shoot' , send))
 	dp.add_handler(CommandHandler('nilesh' , command_nilesh))
 	dp.add_handler(CommandHandler('anmol' , command_anmol))
 	dp.add_handler(CommandHandler('ashutosh' , command_ashutosh))
 	dp.add_handler(CommandHandler('manas' , command_manas))
-	updater.start_polling()
+	updater.start_webhook(listen="0.0.0.0",
+                      port=PORT,
+                      url_path=TOKEN)
+	updater.bot.set_webhook("https://limitless-sierra-13407.herokuapp.com/" + TOKEN)
 	updater.idle()
 
 if __name__ == '__main__':
